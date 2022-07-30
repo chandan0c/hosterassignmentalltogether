@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tranding page of website</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        #container{
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+        }
+        #container div{
+            width: 100%;
+            border: 2px solid black;
+            margin: 5px;
+            padding: 5px;
+            text-align: center;
+        }
+        #container div img{
+            width: 90%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tranding movie list is show here</h1>
+    <div id="container">
+
+    </div>
+</body>
+</html>
+<script>
+    let url="https://fake-movie-database-api.herokuapp.com/api?s=batman";
+    let container=document.getElementById("container");
+    async function initFun(){
+        let data=await fetch(url);
+        let res=await data.json();
+        res=res.Search;
+        console.log(res)
+        res.forEach(movie => {
+          let div=document.createElement("div");
+          let image=document.createElement("img");
+          image.src=movie.Poster;
+          let title=document.createElement("p");
+          title.innerText= movie.Title;
+          let year=document.createElement("p");
+          year.innerText=movie.Year;
+          div.append(image,title,year); 
+          container.append(div);
+        });
+    }
+    initFun()
+</script>

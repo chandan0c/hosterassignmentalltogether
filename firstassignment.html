@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       
+
+    </style>
+</head>
+<body>
+    <input type="text" placeholder="search your movie here" id="search" oninput="myfun()">
+    <div id="container">
+
+    </div>
+    <div id="newContainer">
+
+    </div>
+</body>
+</html>
+<script>
+    let div=document.getElementById("container")
+    let newDiv=document.getElementById("newContainer")
+    let url='http://www.omdbapi.com/?i=tt3896198&apikey=733e1806'
+    async function myfun(){
+        let val=document.getElementById("search").value;
+        let res=await fetch(url+"&s="+val);
+        let data=await res.json();
+        data=data.Search;
+        div.innerHTML="";
+        data.forEach(element => {
+            if(element!=undefined){
+               let p=document.createElement("p");
+               p.textContent=element.Title 
+               p.setAttribute("value",`${element.Title}`)
+               p.setAttribute("onclick",`myfun1(event)`)
+               div.append(p);
+            }
+        });
+    }
+    async function myfun1(event){
+        let data= await fetch(`https://www.omdbapi.com/?t=${event.target.getAttribute('value')}&apikey=733e1806`)
+            data=await data.json()
+            console.log(data);
+            myfun2(data)
+    }
+    async function myfun2(data){
+        div.style.display="none"
+        document.getElementById("search").value=data.Title
+       let title=document.createElement("p")
+       title.innerHTML="title "+data.Title;
+       let year=document.createElement("p")
+       year.innerHTML="year "+data.Year;
+       let rated=document.createElement("p")
+       rated.innerHTML="rating :"+data.Rated;
+       let released=document.createElement("p")
+       released.innerHTML="released :"+data.Released;
+       newDiv.append(title,year,rated,released)
+    }
+   
+</script>
